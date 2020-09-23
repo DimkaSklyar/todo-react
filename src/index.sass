@@ -4,6 +4,7 @@
 	list-style: none
 	outline: none 0
 	font-family: 'Roboto',-apple-system, system-ui, sans-seif
+	box-sizing: border-box
 
 body
 	-webkit-font-smoothing: antialiased
@@ -30,6 +31,32 @@ body
 		border-right: 1px solid #F1F1F1
 		width: 200px
 		padding: 50px 20px
+
+.field
+	background: #FFFFFF
+	border: 1px solid #EFEFEF
+	box-sizing: border-box
+	border-radius: 4px
+	padding: 7px 11px
+	&:focus
+		border-color: darken(#EFEFEF,10)
+	&-w-100
+		width: 100%
+
+.btn
+	background: #4DD599
+	border-radius: 4px
+	padding: 10px 15px
+	border: none
+	color: #fff
+	cursor: pointer
+	transition: .3s
+	&:hover
+		background: darken(#4DD599,5%)
+	&:active
+		background: darken(#4DD599,8%)
+	&-w-100
+		width: 100%
 
 
 
