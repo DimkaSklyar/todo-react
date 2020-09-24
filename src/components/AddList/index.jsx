@@ -3,13 +3,30 @@ import classNames from "classnames";
 import List from "../List";
 
 import addItem from "../../assets/img/addItem.png";
-import closeBtn from "../../assets/img/closeButton.png"
+import closeBtn from "../../assets/img/closeButton.png";
 
 import "./AddList.sass";
 
-const AddList = ({ colors }) => {
+const AddList = ({ colors, onAdd }) => {
   const [state, setState] = useState(false);
   const [stateColor, setStateColor] = useState(colors[0].id);
+  const [inputValue, setInputValue] = useState("");
+
+  const addList = () => {
+    if (!inputValue) {
+      return;
+    }
+    const color = colors.find((color) => color.id === stateColor).hex;
+    onAdd({ id: Math.random(), name: inputValue, color: color });
+    closePopup();
+  };
+
+  const closePopup = () => {
+    setState(false);
+    setInputValue("");
+    setStateColor(colors[0].id);
+  };
+  
   return (
     <div className="add-list__wrapper">
       <List
@@ -24,10 +41,12 @@ const AddList = ({ colors }) => {
       ></List>
       {state && (
         <div className="add-list-popup">
-          <button className="close-btn" onClick={()=>setState(false)}>
-            <img src={closeBtn} alt="Закрыть"/>
+          <button className="close-btn" onClick={closePopup}>
+            <img src={closeBtn} alt="Закрыть" />
           </button>
           <input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
             type="text"
             name="namefolder"
             className={classNames("field", "field-w-100")}
@@ -48,7 +67,9 @@ const AddList = ({ colors }) => {
               ></li>
             ))}
           </ul>
-          <button className={classNames("btn", "btn-w-100")}>Добавить</button>
+          <button onClick={addList} className={classNames("btn", "btn-w-100")}>
+            Добавить
+          </button>
         </div>
       )}
     </div>

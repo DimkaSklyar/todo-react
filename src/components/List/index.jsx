@@ -1,9 +1,12 @@
 import React from "react";
 import classNames from "classnames";
 
+import closeImg from "../../assets/img/close.svg";
+
 import "./List.sass";
 
-const List = ({ items, isRemoveble, onClick }) => {
+const List = ({ items, isRemoveble, onClick, onDelete }) => {
+
   return (
     <ul className="list">
       {items.map((item, index) => (
@@ -22,6 +25,11 @@ const List = ({ items, isRemoveble, onClick }) => {
             )}
           </i>
           <span>{item.name}</span>
+          {isRemoveble && (
+            <button className="btn-close-list" onClick={()=>onDelete(item)}>
+              <img src={closeImg} alt="" />
+            </button>
+          )}
         </li>
       ))}
     </ul>
