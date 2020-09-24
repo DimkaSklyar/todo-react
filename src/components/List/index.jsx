@@ -1,11 +1,18 @@
 import React from "react";
 import classNames from "classnames";
-
+import axios from "axios";
 import closeImg from "../../assets/img/close.svg";
 
 import "./List.sass";
 
 const List = ({ items, isRemoveble, onClick, onDelete }) => {
+  const removeList = (item) => {
+    if (window.confirm("Вы действительно хотите удалить список?")) {
+      axios.delete("http://localhost:3001/lists/" + item.id).then(() => {
+        onDelete(item.id);
+      });
+    }
+  };
 
   return (
     <ul className="list">
@@ -21,12 +28,12 @@ const List = ({ items, isRemoveble, onClick, onDelete }) => {
             {item.icon ? (
               <img src={item.icon} alt="" />
             ) : (
-              <i className="bange" style={{ background: item.color }}></i>
+              <i className="bange" style={{ background: item.color.hex }}></i>
             )}
           </i>
           <span>{item.name}</span>
           {isRemoveble && (
-            <button className="btn-close-list" onClick={()=>onDelete(item)}>
+            <button className="btn-close-list" onClick={() => removeList(item)}>
               <img src={closeImg} alt="" />
             </button>
           )}

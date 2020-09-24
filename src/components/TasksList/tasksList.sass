@@ -1,0 +1,65 @@
+
+.tasks
+
+  &__title
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 39px;
+    color: #64C4ED;
+    padding-bottom: 20px
+    border-bottom: 1px solid #F2F2F2
+    margin-bottom: 30px
+    &:hover img
+      opacity: .3
+
+    img
+      margin-left: 15px
+      cursor: pointer
+      opacity: 0
+      transition: .3s
+      &:hover
+        opacity: .8
+        transform: scale(1.1)
+
+  &__item
+    display: flex
+    margin-bottom: 15px
+    label
+      display: inline-block
+      width: 20px
+      height: 20px
+      border: 2px solid #E8E8E8
+      border-radius: 50%
+      cursor: pointer
+      transition: .3s
+      display: flex
+      justify-content: center
+      align-items: center
+      &:hover
+        background-color: #F2F2F2
+        border-color: #F2F2F2
+        & path
+          stroke: #B3B3B3
+    input[type='checkbox']
+      display: none
+      &:checked + label
+        background-color: #4DD599
+        border-color: transparent
+        & + input
+          text-decoration: line-through
+        & path
+          stroke: white
+    path
+      transition: .3s
+
+  &__value
+    border: 0
+    width: 100%
+    font-size: 16px
+    margin-left: 15px
+
+
+
+

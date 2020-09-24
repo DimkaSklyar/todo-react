@@ -15,23 +15,28 @@ body
 	justify-content: center
 	align-items: center
 	height: 100vh
+	border-radius: 10px
 
 .todo
+	display: flex
 	margin: auto
 	width: 750px
-	height: 530px
+	min-height: 530px
+	height: auto
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
 	border-radius: 10px
 	border: 1px solid #f3f3f3
-	overflow: hidden
-
+	transition: 1s
+	
 	&__sidebar
 		background-color: #f3f3f3
-		height: 100%
 		border-right: 1px solid #F1F1F1
 		width: 200px
 		padding: 50px 20px
 
+	&__tasks
+		padding: 55px
+		flex: 1
 .field
 	background: #FFFFFF
 	border: 1px solid #EFEFEF
