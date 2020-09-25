@@ -12,18 +12,18 @@
     },
     {
       "id": 3,
-      "name": "Фильмы и сериалы",
+      "name": "Фильмы",
       "colorId": 3
-    },
-    {
-      "id": 4,
-      "name": "Книги",
-      "colorId": 2
     },
     {
       "id": 5,
       "name": "Личное",
       "colorId": 1
+    },
+    {
+      "name": "Книги",
+      "colorId": 2,
+      "id": 6
     }
   ],
   "tasks": [
@@ -80,12 +80,6 @@
       "text": "123",
       "completed": false,
       "id": 9
-    },
-    {
-      "listId": 4,
-      "text": "Купить 1984!",
-      "completed": true,
-      "id": 10
     },
     {
       "listId": 2,

@@ -1,16 +1,33 @@
 import React from "react";
+import axios from "axios";
+
+import AddTaskForm from "../AddTaskForm";
+
 import editSVG from "../../assets/img/edit.svg";
 
 import "./tasksList.sass";
 
-function TasksList({ list }) {
+function TasksList({ list, onEditTitle, onAddTask }) {
+  const editTitle = () => {
+    const newTitle = window.prompt("Введите новое название списка", list.name);
+    if (newTitle) {
+      onEditTitle(list.id, newTitle);
+      axios
+        .patch("http://localhost:3001/lists/" + list.id, {
+          name: newTitle,
+        })
+        .catch(() => alert("Не удалось изменить название. :("));
+    }
+  };
+
   return (
     <div className="tasks">
       <h2 className="tasks__title">
         {list.name}
-        <img src={editSVG} alt="Edit Icon" />
+        <img src={editSVG} onClick={editTitle} alt="Edit Icon" />
       </h2>
       <ul className="tasks__items">
+        {!list.tasks.length && <h2>Задачи отсутствуют</h2>}
         {list.tasks.map((item) => (
           <li key={item.id} className="tasks__item">
             <input type="checkbox" name="itemCheck" id={`task-${item.id}`} />
@@ -40,6 +57,7 @@ function TasksList({ list }) {
           </li>
         ))}
       </ul>
+      <AddTaskForm list={list} onAddTask={onAddTask}></AddTaskForm>
     </div>
   );
 }
