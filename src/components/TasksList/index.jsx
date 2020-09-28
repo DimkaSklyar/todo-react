@@ -12,7 +12,7 @@ function TasksList({
   onAddTask,
   withOutEmpty,
   onRemoveTask,
-  onEditTask
+  onEditTask,
 }) {
   const editTitle = () => {
     const newTitle = window.prompt("Введите новое название списка", list.name);
@@ -43,7 +43,11 @@ function TasksList({
           ></Task>
         ))}
       </ul>
-      <AddTaskForm list={list} onAddTask={onAddTask}></AddTaskForm>
+      <AddTaskForm
+        key={list.id}
+        list={list}
+        onAddTask={onAddTask}
+      ></AddTaskForm>
     </div>
   );
 }

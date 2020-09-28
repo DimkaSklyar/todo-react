@@ -10,7 +10,6 @@ function App() {
   const [lists, setLists] = useState(null);
   const [colors, setColors] = useState(null);
   const [activeItem, setActiveItem] = useState();
-  const [withOutEmpty, setWithOutEmpty] = useState(true);
   let history = useHistory();
 
   useEffect(() => {
@@ -68,26 +67,34 @@ function App() {
   };
 
   const onEditTask = (id, text) => {
-		const newTitle = window.prompt("Введите новое название списка", text);
-		let newList = lists;
-    if (newTitle) {
-      newList = lists.map((item) => {
-        if (item.tasks.id === id) {
-          item.tasks.text = text;
+    const newTitle = window.prompt("Введите новое название списка", text);
+
+    if (!newTitle) {
+      alert("Задача не может быть пустой. :(");
+      return;
+    }
+
+    const newList = lists.map((item) => {
+      item.tasks.map((task) => {
+        if (task.id === id) {
+          task.text = newTitle;
         }
-        return item;
-      });
-      axios
-        .patch("http://localhost:3001/tasks/" + id, {
-          text: newTitle,
-        })
-        .catch(() => alert("Не удалось изменить задачи. :("));
-		}
-		console.log(newList)
-		setLists(newList);
+        return task;
+      })
+      return item;
+    });
+    console.log(newList);
+    axios
+      .patch("http://localhost:3001/tasks/" + id, {
+        text: newTitle,
+      })
+      .catch(() => alert("Не удалось изменить задачи. :("));
+    setLists(newList);
+
+
   };
 
-  const onClick = (item) => {
+  const onClickItem = (item) => {
     setActiveItem(item);
     history.push(`/lists/${item.id}`);
   };
@@ -108,27 +115,27 @@ function App() {
         <div className="todo__sidebar">
           {
             <List
+              onClickItem={() => history.push(`/`)}
               items={[
                 {
+                  active: history.location.pathname === '/',
                   icon: listSvg,
                   name: "Все задачи",
-                  active: true,
                 },
               ]}
-              onClick={(list) => history.push(`/`)}
             ></List>
           }
           {lists ? (
             <List
               items={lists}
               onDelete={onDelete}
-              onClick={onClick}
+              onClickItem={onClickItem}
               isRemoveble
               activeItem={activeItem}
             ></List>
           ) : (
-            "Загрузка..."
-          )}
+              "Загрузка..."
+            )}
           <AddList onAdd={onAddList} colors={colors}></AddList>
         </div>
         <div className="todo__tasks">
@@ -140,7 +147,7 @@ function App() {
                   list={list}
                   onAddTask={onAddTask}
                   onEditTitle={onEditTitle}
-                  withOutEmpty
+                  withOutEmpty={true}
                   onRemoveTask={onRemoveTask}
                   onEditTask={onEditTask}
                 ></TasksList>
@@ -159,7 +166,7 @@ function App() {
           </Route>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

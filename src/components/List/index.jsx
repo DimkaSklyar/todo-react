@@ -5,7 +5,14 @@ import closeImg from "../../assets/img/close.svg";
 
 import "./List.sass";
 
-const List = ({ items, isRemoveble, onClick, onDelete, activeItem }) => {
+const List = ({
+  items,
+  isRemoveble,
+  onClickItem,
+  onClick,
+  onDelete,
+  activeItem,
+}) => {
   const removeList = (item) => {
     if (window.confirm("Вы действительно хотите удалить список?")) {
       axios.delete("http://localhost:3001/lists/" + item.id).then(() => {
@@ -13,18 +20,18 @@ const List = ({ items, isRemoveble, onClick, onDelete, activeItem }) => {
       });
     }
   };
-
+  console.log(!onClick);
   return (
-    <ul className="list">
+    <ul onClick={onClick} className="list">
       {items.map((item, index) => (
         <li
           key={index}
-          onClick={onClick ? () => onClick(item) : null}
           className={classNames("list__item", item.className, {
             active: item.active
-              ? item.active
-              : activeItem && item.id === activeItem.id,
+              ? console.log(1)
+              : activeItem && activeItem.id === item.id,
           })}
+          onClick={onClickItem ? () => onClickItem(item) : null}
         >
           <i>
             {item.icon ? (
