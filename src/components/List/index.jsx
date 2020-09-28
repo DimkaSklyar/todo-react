@@ -19,9 +19,11 @@ const List = ({ items, isRemoveble, onClick, onDelete, activeItem }) => {
       {items.map((item, index) => (
         <li
           key={index}
-          onClick={onClick ? ()=> onClick(item) : null}
+          onClick={onClick ? () => onClick(item) : null}
           className={classNames("list__item", item.className, {
-            active: activeItem && item.id === activeItem.id
+            active: item.active
+              ? item.active
+              : activeItem && item.id === activeItem.id,
           })}
         >
           <i>

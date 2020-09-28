@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 import addSVG from "./../../assets/img/add.svg";
 
@@ -7,26 +8,30 @@ import "./AddTaskForm.sass";
 function AddTaskForm({ list, onAddTask }) {
   const [inputValue, setInputValue] = useState("");
   const [toggleVisible, setToggleVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onVisibleForm = () => {
     setToggleVisible(!toggleVisible);
     setInputValue("");
   };
 
-  const addTask = (textTask) => {
-    console.log(list);
-    //TODO
-    // const newList = [
-    //   ...list.tasks,
-    //   {
-    //     listId: list.id,
-    //     text: textTask,
-    //     completed: true,
-    //   },
-    // ];
-    // console.log(newList);
-    //onAddTask(newList);
-    onVisibleForm();
+  const addTask = () => {
+    const objTask = {
+      listId: list.id,
+      text: inputValue,
+      completed: false,
+    };
+    setIsLoading(true);
+    axios
+      .post("http://localhost:3001/tasks", objTask)
+      .then(({ data }) => {
+        onAddTask(list.id, data);
+      })
+      .catch(() => alert("Ошибка при добавление задачи!"))
+      .finally(() => {
+        setIsLoading(false);
+        onVisibleForm();
+      });
   };
 
   return (
@@ -48,8 +53,8 @@ function AddTaskForm({ list, onAddTask }) {
             className="field field-w-100"
             placeholder="Название задачи"
           />
-          <button onClick={() => addTask(inputValue)} className="btn">
-            Добавить задачу
+          <button disabled={isLoading} onClick={addTask} className="btn">
+            {isLoading ? "Добавляется..." : "Добавить"}
           </button>
           <button onClick={onVisibleForm} className="btn btn__theme_cancel">
             Отмена
