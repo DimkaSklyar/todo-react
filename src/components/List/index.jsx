@@ -13,6 +13,7 @@ const List = ({
   onDelete,
   activeItem,
 }) => {
+
   const removeList = (item) => {
     if (window.confirm("Вы действительно хотите удалить список?")) {
       axios.delete("http://localhost:3001/lists/" + item.id).then(() => {
@@ -20,7 +21,7 @@ const List = ({
       });
     }
   };
-  console.log(!onClick);
+
   return (
     <ul onClick={onClick} className="list">
       {items.map((item, index) => (
@@ -28,7 +29,7 @@ const List = ({
           key={index}
           className={classNames("list__item", item.className, {
             active: item.active
-              ? console.log(1)
+              ? item.active
               : activeItem && activeItem.id === item.id,
           })}
           onClick={onClickItem ? () => onClickItem(item) : null}

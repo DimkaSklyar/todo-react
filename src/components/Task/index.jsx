@@ -2,10 +2,21 @@ import React from "react";
 
 import "./Task.sass";
 
-function Task({ item, onRemoveTask, onEdit }) {
+function Task({ item, onRemoveTask, onEdit, onCompleted, list }) {
+
+  const onChangeCheckbox = (e) => {
+    onCompleted(list.id, item.id, e.target.checked);
+  };
+
   return (
     <li key={item.id} className="tasks__item">
-      <input type="checkbox" name="itemCheck" id={`task-${item.id}`} />
+      <input
+        onChange={onChangeCheckbox}
+        type="checkbox"
+        name="itemCheck"
+        id={`task-${item.id}`}
+        checked={item.completed}
+      />
       <label htmlFor={`task-${item.id}`}>
         <svg
           width="11"
@@ -25,10 +36,7 @@ function Task({ item, onRemoveTask, onEdit }) {
       </label>
       <input readOnly className="tasks__value" value={item.text} type="text" />
       <div className="tasks__item-action">
-        <button
-          className="action"
-          onClick={() => onEdit(item.id, item.text)}
-        >
+        <button className="action" onClick={() => onEdit(item.id, item.text)}>
           <svg
             width="15"
             height="15"

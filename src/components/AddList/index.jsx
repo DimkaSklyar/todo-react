@@ -32,8 +32,8 @@ const AddList = ({ colors, onAdd }) => {
         colorId: stateColor,
       })
       .then(({ data }) => {
-        const color = colors.filter((c) => c.id === stateColor)[0].hex;
-        const listObj = { ...data, color: { hex: color } };
+        const color = colors.filter((c) => c.id === stateColor)[0];
+        const listObj = { ...data, color, tasks: [] };
         onAdd(listObj);
         closePopup();
       })

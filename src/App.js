@@ -9,8 +9,23 @@ import listSvg from "./assets/img/burger.png";
 function App() {
   const [lists, setLists] = useState(null);
   const [colors, setColors] = useState(null);
-  const [activeItem, setActiveItem] = useState();
+  const [activeItem, setActiveItem] = useState(null);
   let history = useHistory();
+
+  useEffect(() => {
+    const listId = history.location.pathname.split("lists/")[1];
+    if (lists) {
+      const list = lists.find((list) => list.id === Number(listId));
+      setActiveItem(list);
+    }
+    history.listen((location) => {
+      const listId = location.pathname.split("lists/")[1];
+      if (lists) {
+        const list = lists.find((list) => list.id === Number(listId));
+        setActiveItem(list);
+      }
+    });
+  }, [history, lists]);
 
   useEffect(() => {
     axios
@@ -23,16 +38,9 @@ function App() {
     });
   }, []);
 
-  useEffect(() => {
-    const listId = history.location.pathname.split("/lists/")[1];
-    if (lists) {
-      const list = lists.find((item) => item.id === Number(listId));
-      setActiveItem(list);
-    }
-  }, [lists, history.location.pathname]);
-
   const onAddList = (obj) => {
     const newList = [...lists, obj];
+
     setLists(newList);
   };
 
@@ -80,23 +88,15 @@ function App() {
           task.text = newTitle;
         }
         return task;
-      })
+      });
       return item;
     });
-    console.log(newList);
     axios
       .patch("http://localhost:3001/tasks/" + id, {
         text: newTitle,
       })
       .catch(() => alert("Не удалось изменить задачи. :("));
     setLists(newList);
-
-
-  };
-
-  const onClickItem = (item) => {
-    setActiveItem(item);
-    history.push(`/lists/${item.id}`);
   };
 
   const onEditTitle = (id, title) => {
@@ -109,6 +109,26 @@ function App() {
     setLists(newList);
   };
 
+  const onCompletedTask = (listId, taskId, completed) => {
+    const newList = lists.map((item) => {
+      if (item.id === listId) {
+        item.tasks.map((task) => {
+          if (task.id === taskId) {
+            task.completed = completed;
+          }
+          return task;
+        });
+      }
+      return item;
+    });
+    axios
+      .patch("http://localhost:3001/tasks/" + taskId, {
+        completed: completed,
+      })
+      .catch(() => alert("Не удалось изменить задачу. :("));
+    setLists(newList);
+  };
+
   return (
     <div className="todo-wrapper">
       <div className="todo">
@@ -118,7 +138,7 @@ function App() {
               onClickItem={() => history.push(`/`)}
               items={[
                 {
-                  active: history.location.pathname === '/',
+                  active: history.location.pathname === "/",
                   icon: listSvg,
                   name: "Все задачи",
                 },
@@ -129,13 +149,15 @@ function App() {
             <List
               items={lists}
               onDelete={onDelete}
-              onClickItem={onClickItem}
+              onClickItem={(list) => {
+                history.push(`/lists/${list.id}`);
+              }}
               isRemoveble
               activeItem={activeItem}
             ></List>
           ) : (
-              "Загрузка..."
-            )}
+            "Загрузка..."
+          )}
           <AddList onAdd={onAddList} colors={colors}></AddList>
         </div>
         <div className="todo__tasks">
@@ -150,6 +172,7 @@ function App() {
                   withOutEmpty={true}
                   onRemoveTask={onRemoveTask}
                   onEditTask={onEditTask}
+                  onCompletedTask={onCompletedTask}
                 ></TasksList>
               ))}
           </Route>
@@ -161,12 +184,13 @@ function App() {
                 onEditTitle={onEditTitle}
                 onRemoveTask={onRemoveTask}
                 onEditTask={onEditTask}
+                onCompletedTask={onCompletedTask}
               ></TasksList>
             )}
           </Route>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 
