@@ -27,7 +27,7 @@ function TasksList({
         .catch(() => alert("Не удалось изменить название. :("));
     }
   };
-  console.log(list);
+
   return (
     <div className="tasks">
       <Link to={`/lists/${list.id}`}>

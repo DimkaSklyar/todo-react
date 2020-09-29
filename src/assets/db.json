@@ -21,18 +21,17 @@
       "colorId": 1
     },
     {
-      "name": "321321321",
-      "colorId": 3,
-      "id": 10
+      "name": "321312312",
+      "colorId": 1,
+      "id": 6
+    },
+    {
+      "name": "543534534",
+      "colorId": 5,
+      "id": 7
     }
   ],
   "tasks": [
-    {
-      "id": 1,
-      "listId": 2,
-      "text": "5",
-      "completed": true
-    },
     {
       "id": 2,
       "listId": 2,
@@ -50,12 +49,6 @@
       "listId": 2,
       "text": "Redux (redux-observable, redux-saga)",
       "completed": false
-    },
-    {
-      "listId": 10,
-      "text": "3213213213",
-      "completed": false,
-      "id": 6
     }
   ],
   "colors": [

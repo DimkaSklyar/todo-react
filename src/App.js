@@ -16,6 +16,9 @@ function App() {
     const listId = history.location.pathname.split("lists/")[1];
     if (lists) {
       const list = lists.find((list) => list.id === Number(listId));
+      if (list === undefined) {
+        history.push('/');
+      }
       setActiveItem(list);
     }
     history.listen((location) => {
@@ -60,6 +63,8 @@ function App() {
   };
 
   const onRemoveTask = (listId, taskId) => {
+
+
     const newList = lists.map((item) => {
       if (item.id === listId) {
         item.tasks = item.tasks.filter((task) => task.id !== taskId);
@@ -70,8 +75,8 @@ function App() {
       axios
         .delete("http://localhost:3001/tasks/" + taskId)
         .catch(() => alert("Не удалось удалить задачу. :("));
+      setLists(newList);
     }
-    setLists(newList);
   };
 
   const onEditTask = (id, text) => {
@@ -156,8 +161,8 @@ function App() {
               activeItem={activeItem}
             ></List>
           ) : (
-            "Загрузка..."
-          )}
+              "Загрузка..."
+            )}
           <AddList onAdd={onAddList} colors={colors}></AddList>
         </div>
         <div className="todo__tasks">
